@@ -1,0 +1,12 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  enrolment: one
+  hourly_rate: 1.5
+  review: 1.5
+
+two:
+  enrolment: two
+  hourly_rate: 1.5
+  review: 1.5
+

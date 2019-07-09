@@ -1,0 +1,9 @@
+ <h1>Choose a course to find a mentor</h1>
+ <% @user.enrolments.all.each do |enrolment| %>
+    <% if enrolment.year == Date.today.year %>
+        <%= Course.find(enrolment.course_id).number %></br>
+        <%= Course.find(enrolment.course_id).name %></br>
+        <%= link_to "find a mentor",:action => 'new',:course_id => enrolment.course_id %> 
+        <hr/>
+    <% end %>
+ <% end %>

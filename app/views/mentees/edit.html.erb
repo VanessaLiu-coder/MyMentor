@@ -1,0 +1,17 @@
+<h1>Give feedback to the tutorial for <%= User.find(Enrolment.find(Mentor.find(Match.find(params[:id]).mentor_id).enrolment_id).user_id).firstName %> in <%= Course.find(Enrolment.find(Mentor.find(Match.find(params[:id]).mentor_id).enrolment_id).course_id).name %>?</h1>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= form_for ([@user, @matched]), url: {action: "update"} do |f| %>
+      <%= f.label :feedback %>
+      <div id = "rating-form"></div>
+      <%= f.submit "Confirm" , class: "btn btn-primary"%>
+    <% end %>
+  </div>
+</div>
+
+<script>
+  $('#rating-form').raty({
+    path:'/assets/',
+    scoreName:'review[rating]'
+  });
+</script>

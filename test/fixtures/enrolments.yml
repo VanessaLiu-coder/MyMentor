@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  course: one
+  year: 1
+  mentor: 
+
+two:
+  user: two
+  course: two
+  year: 1
+  mentor: 

@@ -1,0 +1,16 @@
+<h1>please choose course and set hourly rate</h1>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <p>
+      <%= form_for([@user, @user.mentors.build]) do |f| %>
+      <%= f.label :enrolment_id %><br> 
+      <%= f.select :enrolment_id, @user.enrolments.where("is_mentor != ? AND year < 2018",true).collect{|x| [x.course.name, x.id]},:selected => params[:enrolment_id]%>
+      <%= f.label :hourly_rate %><br>
+      <%= f.number_field :hourly_rate,min:1,:value => 10 %>
+    </p>
+    <p>
+      <%= f.submit "Confirm to be a mentor", class: "btn btn-primary" %>
+    </p>
+    <% end %>
+  </div>
+</div>

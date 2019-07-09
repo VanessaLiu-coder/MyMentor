@@ -1,0 +1,10 @@
+<div class="center jumbotron">
+	<h1>Welcome to MyMentors</h1>
+
+	<h2>
+		This is the home page for MyMentors web application.
+	</h2>
+    <% if !logged_in? %>
+	<%= link_to "Log in now", login_path, class: "btn btn-lg btn-primary" %>
+	<% end %>
+</div>

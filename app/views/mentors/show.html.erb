@@ -1,0 +1,27 @@
+<% if Match.exists?(mentor_id: @mentor.id) %>
+<h1>Current student of <%= Course.find(Enrolment.find(Mentor.find(@mentor.id).enrolment_id).course_id).name %></h1>
+  <table class="table table-hover">
+    <tr>
+      <th>Student name</th>  
+      <th>State</th>
+      <th>Contact</th>
+    </tr>
+    <% Match.where(mentor_id: @mentor.id).each do |i| %>
+    <tr>
+      <td><%= User.find(i.user_id).firstName %></td>
+      <% if i.if_finish == true %>
+        <td>Pending feedback</td>
+      <% else %>
+        <td>Unfinished</td>
+      <% end %>
+      <% @id = User.find(i.user_id).name %>
+      <td><a href="mailto:<%=User.find(i.user_id).name%>@student.adelaide.edu.au?Subject=Hello,<%=User.find(i.user_id).firstName%>" target="_top">Send Mail</a><td>
+      <% if i.if_finish != true %>
+        <td><%= link_to "finished", edit_user_mentor_path(@user,i.id) %></td>
+      <% end %>
+    </tr>
+    <% end %>
+  </table>
+<% else %>
+<h1>No current student of <%= Course.find(Enrolment.find(Mentor.find(@mentor.id).enrolment_id).course_id).name %></h1>
+<% end %>

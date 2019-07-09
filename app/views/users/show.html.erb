@@ -1,0 +1,54 @@
+<% provide(:title, @user.name) %>
+<div class="row">
+  <aside class="col-md-4">
+    <section class="user_info">
+      <h1>
+        <%= gravatar_for @user %>
+        <%= @user.firstName %>
+      </h1>
+    </section>
+    <h3><%= link_to "Apply to be a mentor", new_user_mentor_url(current_user) %></h3>
+    <h3><%= link_to "Find a mentor", user_mentee_url(current_user) %></h3>
+    
+    <ul class="list-unstyled">      
+      <% @counter = 0 %>
+      <% @user.mentors.all.each do |m| %>
+        <% @num = Match.where(mentor_id: m.id, if_finish: nil).count %>
+        <% @counter = @counter + @num %>
+      <% end %>
+      <li><%= @counter %> unfinished course(s) as mentor <%= link_to "view", user_mentors_path(current_user) %></li>
+      <li><%= Match.where(user_id: @user.id, if_finish: true).count %> pending feedback <%= link_to "view", user_mentees_path(current_user) %></li>
+    </ul>
+  </aside>
+  <div class="col-md-8">
+    <% @user.enrolments.all.each do |i| %>
+      <% if i.year < Date.today.year %>
+      <h3><%= i.year %></h3>
+      <h3><%= Course.find_by(id:i.course_id).number %> <%= Course.find_by(id:i.course_id).name %></h3>
+      <% if i.is_mentor == true || Enrolment.exists?(user_id: @user.id,course_id: i.course_id, is_mentor: true)%>
+        <h4 class = "grey">Already a mentor, <%= Match.where(mentor_id: Mentor.find_by(enrolment_id: i.id),if_finish: nil).count %> haven't finished</h4>
+      <% elsif Enrolment.exists?(user_id: @user.id,course_id: i.course_id, year: Date.today.year)%>
+        <h4 class = "grey">Can't be the mentor</h4>
+      <% else %>
+        <h4><%= link_to "Be a mentor", new_user_mentor_path(@user.id, :enrolment_id => i.id) %></h4>
+      <% end %>
+      <hr/>
+      <% else %>
+      <h3><%= i.year %></h3>
+      <h3><%= Course.find_by(id:i.course_id).number %> <%= Course.find_by(id:i.course_id).name %></h3>
+      <% @is_mentor = false %>
+      <% Match.where(user_id: @user.id).all.each do |matched| %>
+        <% if Enrolment.find(Mentor.find(matched.mentor_id).enrolment_id).course_id == i.course_id %>
+          <% @is_mentor = true %>
+        <% end %>
+      <% end %>
+      
+      <% if @is_mentor == true %>
+        <h4 class = "grey">Already a mentee</h4>
+      <% end %>
+      <h4><%= link_to "Find a mentor", new_user_mentee_path(@user.id, :course_id => i.course_id) %></h4>
+      <hr/>
+      <% end %>
+    <% end %>
+  </div>
+</div>

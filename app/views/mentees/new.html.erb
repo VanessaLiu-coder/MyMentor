@@ -1,0 +1,37 @@
+<h1><%= @course.name %></h1>
+  <% if @course.mentors.any? %>
+  <table class="table table-hover" >
+    <tr>
+      <th>Mentor name</th>  
+      <th>Hourly rate</th>
+      <th>Review</th>
+      <th>has teached</th>
+      <th>Pick</th>
+    </tr>
+    <% @course.mentors.each do |mentor|%>
+    <tr>
+      <td><%= User.find(Enrolment.find(mentor.enrolment_id).user_id).firstName %></td>
+      <td><%= mentor.hourly_rate %></td>
+      <td><div class = "review-rating" data-score = "<%= mentor.review %>"> <%= mentor.review %> </div></td>
+      <td><%= mentor.finished_student %></td>
+      <% if Match.exists?(user_id: @user.id, mentor_id: mentor.id) %>
+        <td>haven't finished</td>
+      <% else %>
+        <td><%= link_to "choose",{:action => :create, :mentor_id => mentor.id, :user_id => @user.id},  :method => :post %></td>
+      <% end %>
+    <% end %>
+    </tr>
+  </table>
+  <% else %>
+    <h3>No available mentor</h3>
+  <% end %>
+  
+<script>
+  $('.review-rating').raty({
+    readOnly: true,
+    score: function(){
+      return $(this).attr('data-score');
+    },
+    path: '/assets/'
+  });
+</script>

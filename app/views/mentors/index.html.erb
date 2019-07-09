@@ -1,0 +1,23 @@
+<h1>All courses applied</h1>
+ 
+<table class="table table-hover">
+  <tr>
+    <th>Course number</th>  
+    <th>Course name</th>
+    <th>Hourly rate</th>
+    <th>unfinished</th>
+    <th>Show mentee</th>
+  </tr>
+ 
+  <% @mentors.each do |mentor| %>
+    <tr>
+      <% if Enrolment.find(mentor.enrolment_id).user_id == @user.id %>
+      <td><%= Course.find(Enrolment.find(mentor.enrolment_id).course_id).number %></td>
+      <td><%= Course.find(Enrolment.find(mentor.enrolment_id).course_id).name %></td>
+      <td><%= mentor.hourly_rate %></td>
+      <td><%= Match.where(mentor_id: mentor.id, if_finish: nil).count %></td>
+      <td><%= link_to "detail", user_mentor_path(@user,mentor.id) %></td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>

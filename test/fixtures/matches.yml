@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  feedback: 1.5
+  mentor: one
+  user: one
+
+two:
+  feedback: 1.5
+  mentor: two
+  user: two

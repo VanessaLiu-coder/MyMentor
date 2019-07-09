@@ -1,0 +1,4 @@
+a1697614:
+  name: a1697614
+  password: 123456
+  password_digest: <%= User.digest('123456') %>

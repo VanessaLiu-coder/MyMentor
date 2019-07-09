@@ -1,0 +1,42 @@
+<h1>All mentor</h1>
+<% if Match.exists?(user_id: @user.id)%>  
+  <table class="table table-hover">
+    <tr>
+      <th>Course name</th>
+      <th>Mentor name</th>  
+      <th>Hourly rate</th>
+      <th>Review</th>
+      <th>State</th>
+      <th>Contact</th>
+    </tr>
+   
+    <% @matches.each do |a| %>
+      <tr>
+        <% if a.user_id == @user.id %>
+        <td><%= Course.find(Enrolment.find(Mentor.find(a.mentor_id).enrolment_id).course_id).name%></td>
+        <td><%= User.find(Enrolment.find(Mentor.find(a.mentor_id).enrolment_id).user_id).firstName %></td>
+        <td><%= Mentor.find(a.mentor_id).hourly_rate %></td>
+        <td><div class = "review-rating" data-score = "<%= Mentor.find(a.mentor_id).review %>"> <%= Mentor.find(a.mentor_id).review %> </div></td>
+        <% if a.if_finish == true %>
+          <td><%= link_to "give feedback", edit_user_mentee_path(@user,a.id) %></td>
+        <% else %>
+          <td>commencing</td>
+        <% end %>
+        <td><a href="mailto:<%=User.find(Enrolment.find(Mentor.find(a.mentor_id).enrolment_id).user_id).name%>@student.adelaide.edu.au?Subject=Hello,<%=User.find(Enrolment.find(Mentor.find(a.mentor_id).enrolment_id).user_id).firstName%>" target="_top">Send Mail</a></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </table>
+<% else %>
+  <h3>You haven't chosen a mentor yet</h3>
+<% end %>
+
+<script>
+  $('.review-rating').raty({
+    readOnly: true,
+    score: function(){
+      return $(this).attr('data-score');
+    },
+    path: '/assets/'
+  });
+</script>
